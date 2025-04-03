@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Wikipedia Search</title>
+    <link rel="stylesheet" href="stile.css">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+   
+</head>
+
+<body>
+    
+<header>
+    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/8/80/Wikipedia-logo-v2.svg/100px-Wikipedia-logo-v2.png"  width="100" height="100"> 
+
+    <h1 id="Headline1">Wikipedia Search</h1>
+
+    <div id="searchbar" class="topnav">
+        <input  id="Search" type="text" placeholder="Search..">
+        <select name="sprache" id="sprache">
+            <option value="de">German</option>
+            <option selected value="en">English</option>
+        </select>
+        <input id="page" type="number" value="5" min="1" max="100">
+        <button id="searchbutton">
+           search
+        </button>
+        
+    </div>
+
+</header>
+
+<main>
+    <ul id="list" style="list-style-type: none;">
+    </ul>
+</main>
+
+<script src="script.js">
+</script> 
+
+</body>
+</html> 
