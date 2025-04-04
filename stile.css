@@ -17,7 +17,7 @@ body{
 #Search{
     color: black; 
     border: 2px; 
-    border-color: lightgray; 
+    border-color: rgb(0, 0, 0); 
     border-style: solid; 
     border-radius: 10px;
     padding: 5px;
@@ -25,10 +25,10 @@ body{
 }
 
 #searchbutton{
-    color: white;
-    background-color: green;
+    color: rgb(0, 0, 0);
+    background-color: rgb(255, 255, 255);
     border:2px;
-    border-color: green;
+    border-color: rgb(255, 255, 255);
     border-radius: 5px;
     padding: 5px;
     margin-left: 5px;
@@ -72,10 +72,10 @@ body{
 
 #page{
     width: 50px;
-    color: white;
-    background-color: green;
+    color: rgb(0, 0, 0);
+    background-color: rgb(255, 255, 255);
     border:2px;
-    border-color: green;
+    border-color: black;
     border-radius: 5px;
     padding: 5px;
     margin-left: 5px;
@@ -115,5 +115,5 @@ body{
 }
 
 .searchmatch{
-    background-color: rgb(255, 249, 144);
+    background-color: rgb(255, 251, 170);
 }
