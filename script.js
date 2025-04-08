@@ -26,13 +26,11 @@ searchbutton.addEventListener("click", function(){
 })
 search.addEventListener("keydown", function(event){
     if (event.key == "Enter"){
-        handlesearch()
+        handlesearch(search.value)
     }
 })
 
 function highlight(searchvalue, text) {
-    console.log(searchvalue)
-    console.log(text)
     if (text == null){
         return text
     }
@@ -44,8 +42,6 @@ function highlight(searchvalue, text) {
     let matchedtext = text.substring(matchedtextstart, matchedtextend)
     let bevormatchedtext = text.substring(0, matchedtextstart)
     let aftermatchedtext = text.substring(matchedtextend, text.length)
-    console.log("matchedtextend", matchedtextstart)
-    console.log("aftermetchedtext", aftermatchedtext)
     return `<div class="matchedtext">${bevormatchedtext}<div class="highlight">${matchedtext}</div>${aftermatchedtext}</div>`
   }
 
@@ -53,6 +49,7 @@ async function handlesearch(searchvalue) {
     try{
         list.innerHTML = `<div id="loader"></div>`
         const pages = await loadartikels(searchvalue)
+        loadsearchhistorie(searchvalue)
         console.log("pages",pages)
         mapartiklestohtml(pages)
         if (pages.length <1){
@@ -86,33 +83,40 @@ function mapartiklestohtml(pages) {
 }
 
 async function loadartikels(searchvalue){
+        if (!searchvalue){
+            return []
+        }
+        console.log(searchvalue)
         let url = `https://api.wikimedia.org/core/v1/wikipedia/${sprache.value}/search/page?q=${searchvalue}&limit=${page.value}`;
         let response = await  fetch(url);
         let json = await response.json()
-        let historyshtml = []
-        let history = localStorage.getItem("history") ??""
-        let historyarray = history.split(',')
-        console.log("historynew", historyarray)
-        console.log("history", history)
-        let newhistory = historyarray.push(searchvalue)
-        console.log("newhistory",newhistory)
-        localStorage.setItem("history", newhistory.join(","))
-        for (let i = 0; i < historyarray.length; i++){
-            const historyentri = historyarray[i]
-            historyshtml[i] = `<option class = "suchverlaufbutton">${historyentri}</option>`
-            //console.log(history)
-        }
-        suchverlauf.innerHTML = historyshtml.join("")
-
-        let suchverlaufbuttons = document.querySelectorAll(".suchverlaufbutton")
-        console.log(suchverlaufbuttons)
-        for (let i = 0; i < suchverlaufbuttons.length; i++){
-            const suchverlaufbuttoneinzahl = suchverlaufbuttons[i]
-            suchverlaufbuttoneinzahl.addEventListener("click", async function(){
-                const pages = await handlesearch(suchverlaufbuttoneinzahl.value)
-                mapartiklestohtml(pages)
-                console.log(suchverlaufbuttoneinzahl.value)
-            })
-        }
         return json.pages
+}
+
+function loadsearchhistorie(searchvalue){
+    let historyshtml = []
+    let history = localStorage.getItem("history")
+    let historyarray = history?.split(',') ??[]
+    if (searchvalue && searchvalue.trim() !== ""){
+        historyarray.push(searchvalue)
+        localStorage.setItem("history", historyarray.join(","))
+        console.log(searchvalue)
+    }
+   
+    for (let i = 0; i < historyarray.length; i++){
+        const historyentri = historyarray[i]
+        historyshtml[i] = `<option class = "suchverlaufbutton">${historyentri}</option>`
+    }
+    suchverlauf.innerHTML = historyshtml.join("")
+
+    let suchverlaufbuttons = document.querySelectorAll(".suchverlaufbutton")
+    console.log(suchverlaufbuttons)
+    for (let i = 0; i < suchverlaufbuttons.length; i++){
+        const suchverlaufbuttoneinzahl = suchverlaufbuttons[i]
+        suchverlaufbuttoneinzahl.addEventListener("click", async function(){
+            const pages = await handlesearch(suchverlaufbuttoneinzahl.value)
+            mapartiklestohtml(pages)
+        })
+    }
+
 }
